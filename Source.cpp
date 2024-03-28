@@ -119,13 +119,10 @@ int main() {
 
 	int** setAA = new int* [size_a]; // se crea la matriz dinamica 
 	for (short i = 0; i < size_a; i++) { setAA[i] = new int[size_a]; }
-
-		while (1) {
-			// declara operaciones
-			valuesOfSetA(verify, size_a, setA);
-			operationSetA(size_a, setA, setAA);
-			validset(size_a, setAA, setR);
-		}
+	// declara operaciones
+	valuesOfSetA(verify, size_a, setA);
+	operationSetA(size_a, setA, setAA);
+	validset(size_a, setAA, setR);
 
 
 	// se libera la memoria
