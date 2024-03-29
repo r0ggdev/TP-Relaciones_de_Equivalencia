@@ -23,7 +23,7 @@ contexto real.
 ## Avances:
 
 Usando datos aleatorios: 
-    ![Datos aleatorios](Sources\image.png "Datos aleatorios, opcion A")
+    ![Datos aleatorios](https://github.com/faryd19/matediscreta/blob/main/Sources/image.png "Datos aleatorios, opcion A")
 
 Usando datos manuales: 
-    ![Datos aleatorios](Sources\image2.png "Datos manuales, opcion M")
+    ![Datos aleatorios]([Sources\image2.png](https://github.com/faryd19/matediscreta/blob/main/Sources/image2.png) "Datos manuales, opcion M")
