@@ -1,6 +1,5 @@
 #include<iostream>
 #include<conio.h>
-
 using namespace std;
 using namespace System;
 
@@ -24,22 +23,33 @@ void valuesOfSetA(char& verify, short& size_a, int* setA) {
 	if (verify != 'M') {
 		for (short i = 0; i < size_a; i++) {
 			setA[i] = 1 + rand() % (12 + 1 - 1);
-			for (short j = 0; j < i; j++) {
+			for (short j = 0; j < i; j++) { //verificacion de numero repetido
 				if (setA[i] == setA[j]) {
 					setA[i] = 1 + rand() % (12 + 1 - 1);
 					j = -1;
 				}
 			}
-			//setA[i] == setA[i - 1] ? setA[i] = 1 + rand() % (12 + 1 - 1) : setA[i];
 		}
 	}
 	else {
 		for (short i = 0; i < size_a; i++) {
+			float check_int;
+			Console::ForegroundColor = ConsoleColor::White;
 			cout << "\n Ingrese los datos del conjunto A - posicion [" << i + 1 << "]: ";
-			cin >> setA[i];
+			cin >> check_int;
+			if (check_int - int(check_int) == 0)setA[i] = check_int;
+			else {
+				Console::ForegroundColor = ConsoleColor::Red;
+				cout << "\n\n!!NUMERO DECIMAL, INGRESA OTRO!!\n"; i--;
+			}
+
 			for (int j = 0; j < i; j++) {
 				if (setA[i] == setA[j]) {
-					cout << "Ya usaste este numero, gil, prueba otro: ";  cin >> setA[i];
+					//cout << "Ya usaste este numero, gil, prueba otro: ";  cin >> setA[i];
+					Console::ForegroundColor = ConsoleColor::Red;
+					cout << "\n\n!!NUMERO REPETIDO, VUELVE A INTENTAR!!\n\n";
+					Console::ForegroundColor = ConsoleColor::White;
+					cout << "Ingrese los datos del conjunto A - posicion [" << i + 1 << "]: "; cin >> setA[i];
 					j = -1;
 				}
 			}
@@ -67,6 +77,7 @@ void operationSetA(short& size_a, int* setA, int** setAA) {
 		}
 		cout << endl;
 	}
+
 	cout << "\n Mostrar matriz:\n\n ";
 	for (short i = 0; i < size_a; i++) {
 		for (short j = 0; j < size_a; j++) {
@@ -88,7 +99,7 @@ void validset(short& size_a, int** setAA, int* setR) {
 		}
 	}
 	for (short i = 0; i < valueR; i++) {
-		for (short j = i + 1; j < valueR; j++) {
+		for (short j = i + 1; j < valueR; j++) { //verificacion de numero repetido
 			if (setR[i] == setR[j]) {
 				for (short h = j; h < valueR; h++) {
 					setR[h] = setR[h + 1];
@@ -119,17 +130,16 @@ int main() {
 
 	int** setAA = new int* [size_a]; // se crea la matriz dinamica 
 	for (short i = 0; i < size_a; i++) { setAA[i] = new int[size_a]; }
+	
 	// declara operaciones
 	valuesOfSetA(verify, size_a, setA);
 	operationSetA(size_a, setA, setAA);
 	validset(size_a, setAA, setR);
 
-
-	// se libera la memoria
+	// se libera la memoria 
 	for (int i = 0; i < size_a; i++) { delete[] setAA[i]; }
 	delete[] setAA, setA;
 
 	_getch();
-	
 	return 0;
 }
