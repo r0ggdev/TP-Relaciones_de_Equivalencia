@@ -20,10 +20,19 @@ equivalencia de cada elemento.
 - Que aplicaciones tiene las relaciones de equivalencia en el
 contexto real.
 
+#### Revisar link
+
+![Pizarra](https://github.com/faryd19/matediscreta/blob/main/Sources/image3.png "Pizarra digital")
+
+`https://excalidraw.com/#json=an9d2HSZ6EBxhs5Ou-z1K,Ys3Fkw8wYNMJc466VHub7Q`
+
+
+
+
 ## Avances:
 
 Usando datos aleatorios: 
     ![Datos aleatorios](https://github.com/faryd19/matediscreta/blob/main/Sources/image.png "Datos aleatorios, opcion A")
 
 Usando datos manuales: 
-    ![Datos aleatorios](https://github.com/faryd19/matediscreta/blob/main/Sources/image2.png "Datos manuales, opcion M")
+    ![Datos manuales](https://github.com/faryd19/matediscreta/blob/main/Sources/image2.png "Datos manuales, opcion M")
