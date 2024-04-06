@@ -4,6 +4,11 @@
 using namespace std;
 using namespace System;
 
+struct pares {
+	int x;
+	int y;
+};
+
 void setSizeA(short& size_a) {
 
 	// verifica que el valor del conjunto este dentro del rango 
@@ -17,7 +22,7 @@ void setSizeA(short& size_a) {
 void valuesOfSetA(char& verify, short& size_a, int* setA) {
 
 	// verifica que se seleccione una opcion valida A/M
-	do { 
+	do {
 		cout << "\n Desea usar datos aleatoreos [A] o ingresarlos manulamente [M]: ";
 		cin >> verify;
 		verify = toupper(verify);
@@ -30,10 +35,10 @@ void valuesOfSetA(char& verify, short& size_a, int* setA) {
 		for (short i = 0; i < size_a; i++) {
 
 			// se le asigna valores del 1 al 12 al conjunto A
-			setA[i] = 1 + rand() % (12 + 1 - 1); 
-			
+			setA[i] = 1 + rand() % (12 + 1 - 1);
+
 			// verificacion de numero repetido
-			for (short j = 0; j < i; j++) { 
+			for (short j = 0; j < i; j++) {
 				if (setA[i] == setA[j]) {
 					setA[i] = 1 + rand() % (12 + 1 - 1);
 					j = -1;
@@ -83,90 +88,72 @@ void valuesOfSetA(char& verify, short& size_a, int* setA) {
 	cout << "} \n\n\n";
 }
 
-void operationSetA(short& size_a, int* setA, int** setAA) {
-
+void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
+	int valueR = 0;
 	// realiza la suma del conjunto A 
 	for (short i = 0; i < size_a; i++) {
 		for (short j = 0; j < size_a; j++) {
-			setAA[i][j] = setA[i] + setA[j];
+			if ((setA[i] + setA[j]) % 3 == 0 || (setA[i] + setA[j]) % 4 == 0 || (setA[i] + setA[j]) % 5 == 0 || (setA[i] + setA[j]) % 6 == 0) {
+				setAA[i][j] = 1;
+				setR[valueR].x = setA[i];
+				setR[valueR].y = setA[j];
+				valueR++;
+			}
+			else setAA[i][j] = 0;
 		}
 	}
 
 	// mostrar datos 
 	for (short i = 0; i < size_a; i++) {
 		for (short j = 0; j < size_a; j++) {
-			cout << "(A" << i + 1 << ",A" << j + 1 << "): " << setAA[i][j] << "  ";
+			cout << "(A" << i + 1 << ",A" << j + 1 << "): " << setA[i]+ setA[j];
+			if (j < size_a - 1)cout << "  ";
 		}
 		cout << endl;
 	}
 
-	cout << "\n Mostrar matriz:\n\n ";
+	cout << "\n Mostrar matriz:\n\n";
 	for (short i = 0; i < size_a; i++) {
 		for (short j = 0; j < size_a; j++) {
-			cout << " [" << setAA[i][j] << "] ";
+			cout << "[" << setAA[i][j] << "]";
 		}
 		cout << endl;
 	}
-}
 
-void validset(short& size_a, int** setAA, int* setR) {
-	short setM[4] = { 3, 4, 5, 6 }; // declaracion del conjunto M
-	short valueR = 0; // almacena el tamaño del conjunto R
-
-	// verifica que se cumpla la condicion del conjunto M 
-	for (short i = 0; i < size_a; i++) {
-		for (short j = 0; j < size_a; j++) {
-			for (short k = 0; k < 4; k++) {
-				if (setAA[i][j] % setM[k] == 0) { setR[valueR] = setAA[i][j]; valueR++; break; }
-			}
-		}
-	}
-
-	// verificacion de numero repetido
+	cout << "\n\n Conjunto R1: { ";
 	for (short i = 0; i < valueR; i++) {
-		for (short j = i + 1; j < valueR; j++) { 
-			if (setR[i] == setR[j]) {
-				for (short h = j; h < valueR; h++) {
-					setR[h] = setR[h + 1];
-				}
-				valueR--;
-				j = i;
-			}
-		}
-	}
-
-	// mostrar datos
-	cout << "\n\n Conjunto R: { ";
-	for (short i = 0; i < valueR; i++) {
-		cout << setR[i] << " ";
+		cout << "(" << setR[i].x << "," << setR[i].y << ")";
+		if (i < valueR - 1)cout << ",";
 	}
 	cout << "}";
 }
 
 int main() {
-	srand(time(NULL)); // semilla de tiempo
+		srand(time(NULL)); // semilla de tiempo
 
-	// declara las variables
-	short size_a = 0; // tamaño del conjunto A
-	char verify = ' '; // almacena A / M  
+		// declara las variables
+		short size_a = 0; // tamaÃ±o del conjunto A
+		char verify = ' '; // almacena A / M  
 
-	// se obtiene el tamanio del conjunto A
-	setSizeA(size_a);
-	int* setA = new int[size_a]; // se crea el conjunto A
-	int* setR = new int[size_a * 2]; // se crea el conjunto R
+		// se obtiene el tamanio del conjunto A
+		setSizeA(size_a);
+		int* setA = new int[size_a]; // se crea el conjunto A
+		pares* setR = new pares[size_a * size_a]; // se crea el conjunto R
 
-	int** setAA = new int* [size_a]; // se crea la matriz dinamica 
-	for (short i = 0; i < size_a; i++) { setAA[i] = new int[size_a]; } // se declara las columnas de la matriz
-	
-	// declara operaciones
-	valuesOfSetA(verify, size_a, setA);
-	operationSetA(size_a, setA, setAA);
-	validset(size_a, setAA, setR);
+		int** setAA = new int* [size_a]; // se crea la matriz dinamica 
+		for (short i = 0; i < size_a; i++) { setAA[i] = new int[size_a]; } // se declara las columnas de la matriz
 
-	// se libera la memoria 
-	for (int i = 0; i < size_a; i++) { delete[] setAA[i]; }
-	delete[] setAA, setA, setR;
+		// declara operaciones
+		valuesOfSetA(verify, size_a, setA);
+		operationSetA(size_a, setA, setAA, setR);
 
-	_getch();
+
+		// se libera la memoria
+
+		for (int i = 0; i < size_a; i++) { delete[] setAA[i]; }
+		delete[] setAA, setA, setR;
+
+
+		_getch();
 	return 0;
 }
