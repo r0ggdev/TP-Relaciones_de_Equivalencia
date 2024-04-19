@@ -44,10 +44,10 @@ void valuesOfSetA(char& verify, short& size_a, int* setA) {
     else {
         for (short i = 0; i < size_a; i++) {
             float check_int;
-            cout << "\n Ingrese los datos del conjunto A - posición [" << i + 1 << "]: ";
+            cout << "\n Ingrese los datos del conjunto A - posicion [" << i + 1 << "]: ";
             cin >> check_int;
             if (check_int - int(check_int) != 0) {
-                cout << "\n\n!!Número decimal, ingresa otro!!\n";
+                cout << "\n\n!!Numero decimal, ingresa otro!!\n";
                 i--;
             }
             else {
@@ -56,7 +56,7 @@ void valuesOfSetA(char& verify, short& size_a, int* setA) {
             for (int j = 0; j < i; j++) {
                 if (setA[i] == setA[j]) {
                     cout << "\n\n!!Número repetido, vuelve a intentar!!\n\n";
-                    cout << "Ingrese los datos del conjunto A - posición [" << i + 1 << "]: ";
+                    cout << "Ingrese los datos del conjunto A - posicion [" << i + 1 << "]: ";
                     cin >> setA[i];
                     j = -1;
                 }
@@ -115,19 +115,28 @@ void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
         }
     }
 
-    if (reflexiva) cout << "\n\n La relacion es reflexiva.";
-    else cout << "\n\n La relacion no es reflexiva.";
+    if (reflexiva) cout << "\n\n - La relacion es reflexiva.";
+    else cout << "\n\n - La relacion no es reflexiva.";
 
-    if (simetrica) cout << "\n La relacion es simetrica.";
-    else cout << "\n La relacion no es simetrica.";
+    if (simetrica) cout << "\n - La relacion es simetrica.";
+    else cout << "\n - La relacion no es simetrica.";
 
-    if (transitiva) cout << "\n La relacion es transitiva.";
-    else cout << "\n La relacion no es transitiva.";
+    if (transitiva) cout << "\n - La relacion es transitiva.";
+    else cout << "\n - La relacion no es transitiva.";
 
     if (reflexiva && simetrica && transitiva) {
         cout << "\n\n Es una relacion de equivalencia.\n";
+
+        // Muestra las aplicaciones en el contexto real
+        cout << "\n Aplicaciones de la relacion de equivalencia en el contexto real:\n";
+        cout << endl;
+        cout << "1. Diseño de bases de datos relacionales." << endl;
+        cout << "2. Algoritmos de clasificación y búsqueda." << endl;
+        cout << "3. Optimización de recursos en redes de comunicación.\n";
+
         // Presentar la clase de equivalencia de cada elemento
         cout << "\n Clases de equivalencia:\n";
+        cout << endl;
         vector<vector<int>> clases_equivalencia;
         bool* visitado = new bool[size_a]();
         for (short i = 0; i < size_a; i++) {
