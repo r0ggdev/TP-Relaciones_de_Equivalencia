@@ -1,10 +1,10 @@
 #include "Decoracion.h"
 
-char defRelacion() {
+char defRelacion(int x, int y) {
     char op;
     do {
-        cout << endl;
-        cout << "-> Desea ingresar los valores de la relacion de forma manual [M] o automatica [A]?: ";
+        Console::SetCursorPosition(x, y);
+        cout << "Desea ingresar los valores de la relacion de forma manual [M] o automatica [A]?: ";
         cin >> op;
         op = toupper(op);
     } while (op != 'M' && op != 'A');
@@ -17,24 +17,28 @@ struct pares {
     int y;
 };
 
-void setSizeA(short& size_a) {
+void setSizeA(short& size_a, int x, int y) {
     // verifica que el valor del conjunto esté dentro del rango
     do {
-        cout << "\n Ingrese el tamaño de elementos del conjunto (entre 4 y 7): ";
+        Console::SetCursorPosition(x,y);
+        cout << "Ingrese el tamaño de elementos del conjunto (entre 4 y 7): ";
         cin >> size_a;
     } while (size_a < 4 || size_a > 7);
 }
 
-void valuesOfSetA(char& verify, short& size_a, int* setA) {
+short valuesOfSetA(char& verify, short& size_a, int* setA, int x, int y) {
+    short pos;
     // verifica que se seleccione una opción válida A/M
     do {
-        cout << "\n Desea usar datos aleatorios [A] o ingresarlos manualmente [M]: ";
+        Console::SetCursorPosition(x, y);
+        cout << "Desea generar los datos de forma aleatoria [A] o ingresarlos manualmente [M]?: ";
         cin >> verify;
         verify = toupper(verify);
     } while (verify != 'A' && verify != 'M');
 
     // realiza la opción dependiendo del valor ingresado anteriormente
     if (verify != 'M') {
+        pos = 3;
         for (short i = 0; i < size_a; i++) {
             // se le asigna valores del 1 al 12 al conjunto A
             setA[i] = 1 + rand() % (12 + 1 - 1);
@@ -48,12 +52,15 @@ void valuesOfSetA(char& verify, short& size_a, int* setA) {
         }
     }
     else {
+        pos = 5;
         for (short i = 0; i < size_a; i++) {
             float check_int;
-            cout << "\n Ingrese los datos del conjunto A - posicion [" << i + 1 << "]: ";
+            Console::SetCursorPosition(x, y+2);
+            cout << "Ingrese los datos del conjunto A - posicion [" << i + 1 << "]: ";
             cin >> check_int;
             if (check_int - int(check_int) != 0) {
-                cout << "\n\n!!Numero decimal, ingresa otro!!\n";
+                Console::SetCursorPosition(x, y + 3);
+                cout << "!!Numero decimal, ingresa otro!!          ";
                 i--;
             }
             else {
@@ -61,23 +68,34 @@ void valuesOfSetA(char& verify, short& size_a, int* setA) {
             }
             for (int j = 0; j < i; j++) {
                 if (setA[i] == setA[j]) {
-                    cout << "\n\n!!Número repetido, vuelve a intentar!!\n\n";
-                    cout << "Ingrese los datos del conjunto A - posicion [" << i + 1 << "]: ";
-                    cin >> setA[i];
-                    j = -1;
+                    Console::SetCursorPosition(x, y + 3);
+                    cout << "!!Numero repetido, vuelve a intentar!!";
+                    i--;
                 }
+            }
+            if (i < size_a - 1) {
+                Console::SetCursorPosition(x, y + 2);
+                cout << "                                                                  ";
             }
         }
     }
+    Console::SetCursorPosition(x, y + 3);
+    cout << "                                              ";
+
 
     // mostrar datos
-    cout << "\n Conjunto A = { ";
+    Console::SetCursorPosition(x, y + pos-1);
+    cout << "------------------------------------------------------------------";
+    Console::SetCursorPosition(x, y + pos);
+    cout << "Conjunto A = { ";
     for (short i = 0; i < size_a; i++) {
         if (i > 0)cout << " ";
         cout << setA[i];
         if(i!=size_a-1)cout<< ",";
     }
-    cout << " } \n\n\n";
+    cout << " }";
+
+    return pos;
 }
 //
 
@@ -103,14 +121,15 @@ bool veritifacionSetR(short& size_R, pares* setR, int num1, int num2) {
 }
 
 //
-void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
+void operationSetA(short& size_a, int* setA, int** setAA, pares* setR, int x, int y, Deco*d) {
     int valueR = 0;
-    // realiza la suma del conjunto A
+    short pos;
+    char opcion = defRelacion(x,y);
 
-    char opcion = defRelacion();
+   // cout << endl << endl;
 
-    cout << endl << endl;
     if (opcion == 'A') {
+        pos = 0;
         for (short i = 0; i < size_a; i++) {
             for (short j = 0; j < size_a; j++) {
                 if ((setA[i] + setA[j]) % 3 == 0 || (setA[i] + setA[j]) % 4 == 0 || (setA[i] + setA[j]) % 5 == 0 || (setA[i] + setA[j]) % 6 == 0) {
@@ -124,24 +143,27 @@ void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
         }
     }
     else if (opcion == 'M') {
+        pos = 4;
         short ParesOrdenados;
         do {
-            cout << "Cuantos pares ordanos tendra su relacion?: "; cin >> ParesOrdenados;
-        } while (ParesOrdenados>size_a*size_a);
+            Console::SetCursorPosition(x, y + 2);
+            cout << "Cuantos pares ordenados tendra su relacion?: "; cin >> ParesOrdenados;
+        } while (ParesOrdenados > size_a * size_a);
 
-        // comprobacion de pares ordenados repetidos
         for (short i = 0; i < ParesOrdenados; i++) {
             int a; int b;
             bool repetir = false;
             do {
                 repetir = false;
                 do {
+                    Console::SetCursorPosition(x, y + 4);
                     cout << "Ingrese el elemento 'x' del par " << i << " :"; cin >> a;
-                } while (!veritifacionSetA(size_a,setA,a));
+                } while (!veritifacionSetA(size_a, setA, a));
                 do {
+                    Console::SetCursorPosition(x, y + 5);
                     cout << "Ingrese el elemento 'y' del par " << i << " :"; cin >> b;
                 } while (!veritifacionSetA(size_a, setA, b));
-                
+
                 for (int j = 0; j < ParesOrdenados; j++) {
                     if (a == setR[j].x && b == setR[j].y) {
                         repetir = true;
@@ -155,7 +177,10 @@ void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
                 }
 
             } while (repetir);
-            cout << endl;
+            Console::SetCursorPosition(x, y + 4);
+            cout << "                                            ";
+            Console::SetCursorPosition(x, y + 5);
+            cout << "                                            ";
         }
 
         for (short i = 0; i < size_a; i++) {
@@ -166,21 +191,43 @@ void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
         }
     }
 
-    // mostrar datos
-    cout << "\n Mostrar matriz:\n\n";
-    for (short i = 0; i < size_a; i++) {
-        for (short j = 0; j < size_a; j++) {
-            cout << "[" << setAA[i][j] << "]";
-        }
-        cout << endl;
-    }
+    d->matriz(size_a,x,y+3+pos, setAA, setA);
 
-    cout << "\n\n Conjunto R1: { ";
-    for (short i = 0; i < valueR; i++) {
-        cout << "(" << setR[i].x << "," << setR[i].y << ")";
-        if (i < valueR - 1)cout << ",";
-    }
-    cout << "}";
+    Console::SetCursorPosition(x + 20, y + 6 + pos); 
+        cout << "Conjunto R1: { ";
+
+        if (valueR <= 8) {
+            for (short i = 0; i < valueR; i++) {
+                cout << "(" << setR[i].x << "," << setR[i].y << ")";
+                if (i < valueR - 1)cout << ",";
+            }
+        }
+        else {
+            int final;
+            for (int k = 0; k < (valueR / 8)+1; k++) {
+
+                if (k == (valueR / 8))final = valueR;
+                else final = 8*(k+1);
+
+                Console::SetCursorPosition(x + 35, y + 6 + k + pos);
+                for (short i = 8*k; i < final; i++) {
+                    cout << "(" << setR[i].x << "," << setR[i].y << ")";
+                    if (final!= valueR)cout << ",";
+                }
+                y++;
+            }
+        }
+        cout << " }";
+
+    getch();
+
+    //Reinicio-----------
+
+    system("cls");
+    d->marco(116,30);
+    x = 5; y = 2;
+
+    //-------------------
 
     // Verificar si la relación es reflexiva, simétrica, transitiva y de equivalencia
     bool reflexiva = true, simetrica = true, transitiva = true;
@@ -194,27 +241,36 @@ void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
         }
     }
 
-    if (reflexiva) cout << "\n\n - La relacion es reflexiva.";
-    else cout << "\n\n - La relacion no es reflexiva.";
+    Console::SetCursorPosition(x, y);
+    if (reflexiva) cout << "- La relacion es reflexiva.";
+    else cout << "- La relacion no es reflexiva.";
 
-    if (simetrica) cout << "\n - La relacion es simetrica.";
-    else cout << "\n - La relacion no es simetrica.";
+    Console::SetCursorPosition(x, y+2);
+    if (simetrica) cout << "- La relacion es simetrica.";
+    else cout << "- La relacion no es simetrica.";
 
-    if (transitiva) cout << "\n - La relacion es transitiva.";
-    else cout << "\n - La relacion no es transitiva.";
+    Console::SetCursorPosition(x, y+4);
+    if (transitiva) cout << "- La relacion es transitiva.";
+    else cout << "- La relacion no es transitiva.";
 
     if (reflexiva && simetrica && transitiva) {
-        cout << "\n\n Es una relacion de equivalencia.\n";
+
+        Console::SetCursorPosition(x, y+6);
+        cout << " Es una relacion de equivalencia.";
 
         // Muestra las aplicaciones en el contexto real
-        cout << "\n Aplicaciones de la relacion de equivalencia en el contexto real:\n";
-        cout << endl;
+        Console::SetCursorPosition(x, y+8);
+        cout << "Aplicaciones de la relacion de equivalencia en el contexto real:";
+        Console::SetCursorPosition(x, y + 9);
         cout << "1. Diseño de bases de datos relacionales." << endl;
+        Console::SetCursorPosition(x, y + 10);
         cout << "2. Algoritmos de clasificación y búsqueda." << endl;
+        Console::SetCursorPosition(x, y + 11);
         cout << "3. Optimización de recursos en redes de comunicación.\n";
 
         // Presentar la clase de equivalencia de cada elemento
-        cout << "\n Clases de equivalencia:\n";
+        Console::SetCursorPosition(x, y + 13);
+        cout << "Clases de equivalencia:\n";
         cout << endl;
         vector<vector<int>> clases_equivalencia;
         bool* visitado = new bool[size_a]();
@@ -236,6 +292,7 @@ void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
 
         // Mostrar las clases de equivalencia
         for (int i = 0; i < clases_equivalencia.size(); i++) {
+            Console::SetCursorPosition(x, y + 14+i);
             cout << " Clase " << i + 1 << ": { ";
             for (int j = 0; j < clases_equivalencia[i].size(); j++) {
                 cout << clases_equivalencia[i][j] << " ";
@@ -246,7 +303,8 @@ void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
         delete[] visitado;
     }
     else {
-        cout << "\n\n No es una relacion de equivalencia.\n";
+        Console::SetCursorPosition(x, y + 6);
+        cout << " No es una relacion de equivalencia.";
     }
 }
 
@@ -266,19 +324,23 @@ void Menu(int x, int y, Deco* deco) {
         cout << "Enzo Rabanal....... U20211A697I5";
         Console::SetCursorPosition(x + 70, y + 14);
         cout << "Dhilsen Mallqui...... U202319440";
-        Console::SetCursorPosition(x + 70, y + 16);
-        cout << "Presione [X] para ingresar a la aplicacion";
-
+        Console::SetCursorPosition(x + 65, y + 16);
+        cout << "(Presione una tecla para ingresar a la aplicacion)";
         deco->numeros(x, y);
+
         tecla = getch();
-        if (tecla == 'X' || tecla == 'x')break;
+        if (tecla)break;
     }
 }
 
 int main() {
+    int op;
+    short posi;
     Deco* deco = new Deco();
 
     Menu(0, 1, deco);
+
+    Console::CursorVisible = true;
 
     system("cls");
     srand(time(NULL)); // semilla de tiempo
@@ -286,24 +348,36 @@ int main() {
     // declara las variables
     short size_a = 0; // tamaño del conjunto A
     char verify = ' '; // almacena A / M  
-
+    int* setA;
+    int** setAA;
+    pares* setR;
+    short volver;
     // se obtiene el tamaño del conjunto A
-    setSizeA(size_a);
-    int* setA = new int[size_a]; // se crea el conjunto A
 
-    int** setAA = new int* [size_a]; // se crea la matriz dinámica
-    for (short i = 0; i < size_a; i++) { setAA[i] = new int[size_a]; } // se declaran las columnas de la matriz
+    while (1) { //116 30
+        deco->marco(116, 30);
 
-    pares* setR = new pares[size_a * size_a]; // se crea el conjunto R
+             setSizeA(size_a, 5, 2);
+             setA = new int[size_a]; // se crea el conjunto A
 
-    // declara operaciones
-    valuesOfSetA(verify, size_a, setA);
-    operationSetA(size_a, setA, setAA, setR);
+             setAA = new int* [size_a]; // se crea la matriz dinámica
+             for (short i = 0; i < size_a; i++) { setAA[i] = new int[size_a]; } // se declaran las columnas de la matriz
 
-    // libera la memoria
-    for (int i = 0; i < size_a; i++) { delete[] setAA[i]; }
-    delete[] setAA, setA, setR;
+             setR = new pares[size_a * size_a]; // se crea el conjunto R
 
-    _getch();
+             // declara operaciones
+             posi=valuesOfSetA(verify, size_a, setA, 5, 4);
+             operationSetA(size_a, setA, setAA, setR,5, 6+posi,deco);
+
+             cout << "\n\n  "<<char(179)<<"  Desea volver al inicio? [1] SI  [2] NO: "; cin >> volver;
+             if (volver == 2)break;
+             system("cls");
+         }
+
+         // libera la memoria
+         for (int i = 0; i < size_a; i++) { delete[] setAA[i]; }
+         delete[] setAA, setA, setR;
+
+    
     return 0;
 }
