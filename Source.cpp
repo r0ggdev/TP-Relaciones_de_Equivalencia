@@ -79,6 +79,16 @@ short valuesOfSetA(char& verify, short& size_a, int* setA, int x, int y) {
             }
         }
     }
+    int aux;
+    for (int i = 0; i < size_a; i++) {
+        for (int j = 0; j < size_a - 1; j++) {
+            if (setA[i] < setA[j]) {
+                aux = setA[i];
+                setA[i]=setA[j];
+                setA[j] = aux;
+            }
+        }
+    }
     Console::SetCursorPosition(x, y + 3);
     cout << "                                              ";
 
