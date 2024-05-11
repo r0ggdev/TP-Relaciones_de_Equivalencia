@@ -1,10 +1,16 @@
-#include<iostream>
-#include<conio.h>
-#include<ctime>
-#include<vector>
-#include<algorithm>
+#include "Decoracion.h"
 
-using namespace std;
+char defRelacion() {
+    char op;
+    do {
+        cout << endl;
+        cout << "-> Desea ingresar los valores de la relacion de forma manual [M] o automatica [A]?: ";
+        cin >> op;
+        op = toupper(op);
+    } while (op != 'M' && op != 'A');
+
+    return op;
+}
 
 struct pares {
     int x;
@@ -67,23 +73,82 @@ void valuesOfSetA(char& verify, short& size_a, int* setA) {
     // mostrar datos
     cout << "\n Conjunto A = { ";
     for (short i = 0; i < size_a; i++) {
-        cout << setA[i] << " ";
+        if (i > 0)cout << " ";
+        cout << setA[i];
+        if(i!=size_a-1)cout<< ",";
     }
-    cout << "} \n\n\n";
+    cout << " } \n\n\n";
+}
+//
+
+bool veritifacionSetA(short& size_a, int* setA, int numero) {
+    bool existe = false;
+    for (int i = 0; i < size_a; i++) {
+        if (setA[i] == numero) {
+            existe = true; break;
+        }
+    }
+    return existe;
 }
 
+bool veritifacionSetR(short& size_R, pares* setR, int num1, int num2) {
+    bool existe=false;
+    for (int i = 0; i < size_R; i++) {
+        if (num1 == setR[i].x && num2 == setR[i].y) {
+            existe = true; break;
+        }
+    }
+
+    return existe;
+}
+
+//
 void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
     int valueR = 0;
     // realiza la suma del conjunto A
-    for (short i = 0; i < size_a; i++) {
-        for (short j = 0; j < size_a; j++) {
-            if ((setA[i] + setA[j]) % 3 == 0 || (setA[i] + setA[j]) % 4 == 0 || (setA[i] + setA[j]) % 5 == 0 || (setA[i] + setA[j]) % 6 == 0) {
-                setAA[i][j] = 1;
-                setR[valueR].x = setA[i];
-                setR[valueR].y = setA[j];
-                valueR++;
+
+    char opcion = defRelacion();
+
+    cout << endl << endl;
+    if (opcion == 'A') {
+        for (short i = 0; i < size_a; i++) {
+            for (short j = 0; j < size_a; j++) {
+                if ((setA[i] + setA[j]) % 3 == 0 || (setA[i] + setA[j]) % 4 == 0 || (setA[i] + setA[j]) % 5 == 0 || (setA[i] + setA[j]) % 6 == 0) {
+                    setAA[i][j] = 1;
+                    setR[valueR].x = setA[i];
+                    setR[valueR].y = setA[j];
+                    valueR++;
+                }
+                else setAA[i][j] = 0;
             }
-            else setAA[i][j] = 0;
+        }
+    }
+    else if (opcion == 'M') {
+        short ParesOrdenados;
+        do {
+            cout << "Cuantos pares ordanos tendra su relacion?: "; cin >> ParesOrdenados;
+        } while (ParesOrdenados>size_a*size_a);
+
+        for (short i = 0; i < ParesOrdenados; i++) {
+            int a; int b;
+            do {
+                cout << "Ingrese el elemento 'x' del par " << i << " :"; cin >> a;
+            } while (!veritifacionSetA(size_a,setA,a));
+            do {
+                cout << "Ingrese el elemento 'y' del par " << i << " :"; cin >> b;
+            } while (!veritifacionSetA(size_a, setA, b));
+
+            setR[valueR].x = a;
+            setR[valueR].y = b;
+            valueR++;
+            cout << endl;
+        }
+
+        for (short i = 0; i < size_a; i++) {
+            for (int j = 0; j < size_a; j++) {
+                if (veritifacionSetR(ParesOrdenados, setR, setA[i], setA[j])) setAA[i][j] = 1;
+                else setAA[i][j] = 0;
+            }
         }
     }
 
@@ -171,7 +236,37 @@ void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
     }
 }
 
+void Menu(int x, int y, Deco* deco) {
+    char tecla;
+    while (1) {
+        deco->titulo(x+65,y+3);
+        deco->computadora(x,y);
+
+        Console::SetCursorPosition(x + 70, y + 10);
+        cout << "Claudia Belledonne... U202210259";
+        Console::SetCursorPosition(x + 70, y + 11);
+        cout << "Rogger Miranda....... U202319239";
+        Console::SetCursorPosition(x + 70, y + 12);
+        cout << "Raul Tasayco......... U202319415";
+        Console::SetCursorPosition(x + 70, y + 13);
+        cout << "Enzo Rabanal....... U20211A697I5";
+        Console::SetCursorPosition(x + 70, y + 14);
+        cout << "Dhilsen Mallqui...... U202319440";
+        Console::SetCursorPosition(x + 70, y + 16);
+        cout << "Presione [X] para ingresar a la aplicacion";
+
+        deco->numeros(x, y);
+        tecla = getch();
+        if (tecla == 'X' || tecla == 'x')break;
+    }
+}
+
 int main() {
+    Deco* deco = new Deco();
+
+    Menu(0, 1, deco);
+
+    system("cls");
     srand(time(NULL)); // semilla de tiempo
 
     // declara las variables
