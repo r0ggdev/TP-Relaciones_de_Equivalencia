@@ -59,15 +59,18 @@ short valuesOfSetA(char& verify, short& size_a, int* setA, int x, int y) {
             cout << "Ingrese los datos del conjunto A - posicion [" << i + 1 << "]: ";
             cin >> check_int;
             if (check_int - int(check_int) != 0) {
+                PlaySound(TEXT("mal.wav"), NULL, SND_FILENAME | SND_ASYNC);
                 Console::SetCursorPosition(x, y + 3);
                 cout << "!!Numero decimal, ingresa otro!!          ";
                 i--;
+
             }
             else {
                 setA[i] = check_int;
             }
             for (int j = 0; j < i; j++) {
                 if (setA[i] == setA[j]) {
+                    PlaySound(TEXT("mal.wav"), NULL, SND_FILENAME | SND_ASYNC);
                     Console::SetCursorPosition(x, y + 3);
                     cout << "!!Numero repetido, vuelve a intentar!!";
                     i--;
@@ -185,6 +188,7 @@ void operationSetA(short& size_a, int* setA, int** setAA, pares* setR, int x, in
                     repetir = false;
                     valueR++;
                 }
+                if(repetir)PlaySound(TEXT("mal.wav"), NULL, SND_FILENAME | SND_ASYNC);
 
             } while (repetir);
             Console::SetCursorPosition(x, y + 4);
