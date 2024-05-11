@@ -12,37 +12,6 @@ class Deco
 {
 public:
 	Deco(){}
-	void calculadora(int x, int y) {
-        Console::SetCursorPosition(x, y);
-        cout << " _____________________" << endl;
-        Console::SetCursorPosition(x, y + 1);
-        cout << "|  _________________  |" << endl;
-        Console::SetCursorPosition(x, y + 2);
-        cout << "| |                 | |" << endl;
-        Console::SetCursorPosition(x, y + 3);
-        cout << "| |_________________| |" << endl;
-        Console::SetCursorPosition(x, y + 4);
-        cout << "|  __ __ __ __ __ __  |" << endl;
-        Console::SetCursorPosition(x, y + 5);
-        cout << "| |__|__|__|__|__|__| |" << endl;
-        Console::SetCursorPosition(x, y + 6);
-        cout << "| |__|__|__|__|__|__| |" << endl;
-        Console::SetCursorPosition(x, y + 7);
-        cout << "| |__|__|__|__|__|__| |" << endl;
-        Console::SetCursorPosition(x, y + 8);
-        cout << "| |__|__|__|__|__|__| |" << endl;
-        Console::SetCursorPosition(x, y + 9);
-        cout << "| |__|__|__|__|__|__| |" << endl;
-        Console::SetCursorPosition(x, y + 10);
-        cout << "| |__|__|__|__|__|__| |" << endl;
-        Console::SetCursorPosition(x, y + 11);
-        cout << "|  _____              |" << endl;
-        Console::SetCursorPosition(x, y + 12);
-        cout << "| [START]        //// |" << endl;
-        Console::SetCursorPosition(x, y + 13);
-        cout << "|_____________________|" << endl;
-	}
-
     void computadora(int x, int y) {
         Console::SetCursorPosition(x, y);
         cout << "             ________________________________________________" << endl;
