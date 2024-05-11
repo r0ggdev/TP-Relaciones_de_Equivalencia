@@ -129,18 +129,32 @@ void operationSetA(short& size_a, int* setA, int** setAA, pares* setR) {
             cout << "Cuantos pares ordanos tendra su relacion?: "; cin >> ParesOrdenados;
         } while (ParesOrdenados>size_a*size_a);
 
+        // comprobacion de pares ordenados repetidos
         for (short i = 0; i < ParesOrdenados; i++) {
             int a; int b;
+            bool repetir = false;
             do {
-                cout << "Ingrese el elemento 'x' del par " << i << " :"; cin >> a;
-            } while (!veritifacionSetA(size_a,setA,a));
-            do {
-                cout << "Ingrese el elemento 'y' del par " << i << " :"; cin >> b;
-            } while (!veritifacionSetA(size_a, setA, b));
+                repetir = false;
+                do {
+                    cout << "Ingrese el elemento 'x' del par " << i << " :"; cin >> a;
+                } while (!veritifacionSetA(size_a,setA,a));
+                do {
+                    cout << "Ingrese el elemento 'y' del par " << i << " :"; cin >> b;
+                } while (!veritifacionSetA(size_a, setA, b));
+                
+                for (int j = 0; j < ParesOrdenados; j++) {
+                    if (a == setR[j].x && b == setR[j].y) {
+                        repetir = true;
+                    }
+                }
+                if (!repetir) {
+                    setR[valueR].x = a;
+                    setR[valueR].y = b;
+                    repetir = false;
+                    valueR++;
+                }
 
-            setR[valueR].x = a;
-            setR[valueR].y = b;
-            valueR++;
+            } while (repetir);
             cout << endl;
         }
 
